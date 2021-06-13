@@ -35,6 +35,7 @@ dependencies:
 
   logger: ^1.0.0
   sqflite: ^2.0.0+3
+  path: ^1.8.0
 
   mobx: ^2.0.1
   flutter_mobx: ^2.0.0
