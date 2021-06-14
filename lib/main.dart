@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:todo/data/category_dao.dart';
+import 'package:todo/data/category_repository.dart';
+import 'package:todo/data/task_dao.dart';
+import 'package:todo/data/task_repository.dart';
 import 'package:todo/page/home_page.dart';
 
+import 'data/category.dart';
 import 'l10n/s.dart';
+import 'page/home_store.dart';
 
 void main() {
   runApp(TodoApp());
@@ -26,7 +32,22 @@ class TodoApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: Builder(
+        builder: (context) {
+          final taskRepo = TaskRepository(TaskDao());
+          final categoryRepo = CategoryRepository(CategoryDao());
+          return HomePage(
+            store: HomeStore(
+              taskRepo,
+              categoryRepo,
+              Category(
+                name: S.of(context).categoryDefault,
+                type: Category.typeSystem,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }
