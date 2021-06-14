@@ -7,16 +7,16 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:todo/base/gui.dart';
+import 'package:todo/data/task_dao.dart';
 
 abstract class AppDatabase<T> {
-  AppDatabase(this.dbName, this.table, this.primaryKey, [this.version = 1]);
+  static const _dbName = 'todo_database';
+  static const _version = 1;
 
-  final String dbName;
-  final String table;
-
+  final String tableName;
   final String primaryKey;
 
-  final int version;
+  AppDatabase(this.tableName, this.primaryKey);
 
   @protected
   Database? db;
@@ -24,20 +24,21 @@ abstract class AppDatabase<T> {
   bool get isOpen => db?.isOpen == true;
 
   Future<void> open() async {
-    final path = join(await getDatabasesPath(), dbName);
+    final path = join(await getDatabasesPath(), _dbName);
     db = await openDatabase(
       path,
-      onCreate: onCreate,
-      onUpgrade: onUpgrade,
-      version: version,
+      onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
+      version: _version,
     );
   }
 
-  Future<void> onCreate(Database db, int version);
-
-  Future<void> onUpgrade(Database db, int oldVersion, int newVersion) {
-    return Future.value(null);
+  // crate all tables
+  FutureOr<void> _onCreate(Database db, int version) async {
+    await db.execute(TaskDao.sqlCreate);
   }
+
+  FutureOr<void> _onUpgrade(Database db, int oldVersion, int newVersion) {}
 
   Future<void> close() async {
     if (isOpen) {
@@ -47,7 +48,7 @@ abstract class AppDatabase<T> {
 
   Future<T> insert(T data) async {
     await db!.insert(
-      table,
+      tableName,
       toSql(data),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -61,18 +62,18 @@ abstract class AppDatabase<T> {
     String? orderBy,
   }) async {
     final result = await db!.query(
-      table,
+      tableName,
       columns: columns,
       where: where,
       whereArgs: whereArgs,
       orderBy: orderBy,
     );
-    return result.map((e) => fromSql(e)).toList();
+    return result.map(fromSql).toList();
   }
 
   Future<T> update(T data) async {
     await db!.update(
-      table,
+      tableName,
       toSql(data),
       where: '$primaryKey = ?',
       whereArgs: [primaryValue(data)],
@@ -83,7 +84,7 @@ abstract class AppDatabase<T> {
 
   Future<void> delete(dynamic primaryValue) async {
     await db!.delete(
-      table,
+      tableName,
       where: '$primaryKey = ?',
       whereArgs: [primaryValue],
     );
