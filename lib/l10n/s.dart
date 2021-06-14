@@ -6,6 +6,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class S {
+  S._internal();
+
   static Iterable<LocalizationsDelegate<dynamic>> get localizationsDelegates =>
       AppLocalizations.localizationsDelegates;
 
