@@ -9,17 +9,20 @@ import 'package:todo/util/tools.dart' as tool;
 
 class TaskWidget extends StatelessWidget {
   static const _actionComplete = 0;
-  static const _actionDelete = 1;
+  static const _actionIncomplete = 1;
+  static const _actionDelete = 2;
 
   TaskWidget({
     Key? key,
     required this.task,
     required this.onComplete,
+    required this.onIncomplete,
     required this.onDelete,
   }) : super(key: key);
 
   final Task task;
   final ValueCallback<Task> onComplete;
+  final ValueCallback<Task> onIncomplete;
   final ValueCallback<Task> onDelete;
 
   String get _formattedTime {
@@ -28,15 +31,23 @@ class TaskWidget extends StatelessWidget {
   }
 
   List<PopupMenuEntry<int>> _buildMenuEntry(BuildContext context) {
-    final complete = S.of(context).complete;
-    final delete = S.of(context).delete;
+    final local = S.of(context);
+    final statusText;
+    final statusAction;
+    if (task.isCompleted) {
+      statusText = local.incomplete;
+      statusAction = TaskWidget._actionIncomplete;
+    } else {
+      statusText = local.complete;
+      statusAction = TaskWidget._actionComplete;
+    }
     return [
       PopupMenuItem(
-        child: Text(complete),
-        value: TaskWidget._actionComplete,
+        child: Text(statusText),
+        value: statusAction,
       ),
       PopupMenuItem(
-        child: Text(delete),
+        child: Text(S.of(context).delete),
         value: TaskWidget._actionDelete,
       ),
     ];
@@ -50,6 +61,9 @@ class TaskWidget extends StatelessWidget {
         break;
       case TaskWidget._actionComplete:
         onComplete(task);
+        break;
+      case TaskWidget._actionIncomplete:
+        onIncomplete(task);
         break;
       default:
         throw StateError(
