@@ -10,8 +10,6 @@ class Category {
   static const typeSystem = 0;
   static const typeUser = 1;
 
-  @JsonKey(name: 'id')
-  int? id;
   @JsonKey(name: 'name')
   String name;
   @JsonKey(name: 'type')
@@ -19,7 +17,7 @@ class Category {
 
   bool get deletable => type != Category.typeSystem;
 
-  Category({this.id, required this.name, this.type = Category.typeUser});
+  Category({required this.name, this.type = Category.typeUser});
 
   factory Category.fromJson(Map<String, dynamic> json) =>
       _$CategoryFromJson(json);
@@ -28,6 +26,6 @@ class Category {
 
   @override
   String toString() {
-    return 'Category{id: $id, name: $name, type: $type}';
+    return 'Category{name: $name, type: $type}';
   }
 }
