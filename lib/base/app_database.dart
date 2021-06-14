@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:todo/base/gui.dart';
+import 'package:todo/data/category_dao.dart';
 import 'package:todo/data/task_dao.dart';
 
 abstract class AppDatabase<T> {
@@ -20,6 +21,8 @@ abstract class AppDatabase<T> {
 
   @protected
   Database? db;
+
+  ConflictAlgorithm get conflictAlgorithm => ConflictAlgorithm.replace;
 
   bool get isOpen => db?.isOpen == true;
 
@@ -36,6 +39,7 @@ abstract class AppDatabase<T> {
   // crate all tables
   FutureOr<void> _onCreate(Database db, int version) async {
     await db.execute(TaskDao.sqlCreate);
+    await db.execute(CategoryDao.sqlCreate);
   }
 
   FutureOr<void> _onUpgrade(Database db, int oldVersion, int newVersion) {}
@@ -50,7 +54,7 @@ abstract class AppDatabase<T> {
     await db!.insert(
       tableName,
       toSql(data),
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      conflictAlgorithm: conflictAlgorithm,
     );
     return data;
   }
@@ -77,7 +81,7 @@ abstract class AppDatabase<T> {
       toSql(data),
       where: '$primaryKey = ?',
       whereArgs: [primaryValue(data)],
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      conflictAlgorithm: conflictAlgorithm,
     );
     return data;
   }
