@@ -12,6 +12,9 @@ String formatDateTime(DateTime dateTime) {
   return _dateFormatter.format(dateTime);
 }
 
-Future<String?> showEditDialog(BuildContext context) {
-  return showDialog<String>(context: context, builder: (_) => EditDialog());
+Future<String?> showEditDialog(BuildContext context, String hint) {
+  return showDialog<String>(
+    context: context,
+    builder: (_) => EditDialog(hint: hint),
+  );
 }
