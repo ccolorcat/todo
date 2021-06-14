@@ -3,14 +3,16 @@
 // GitHub: https://github.com/ccolorcat
 import "package:todo/base/gui.dart";
 import 'package:todo/data/task.dart';
-import 'package:todo/data/task_dao.dart';
-import 'package:todo/data/task_repository.dart';
 import 'package:todo/page/home_store.dart';
 import 'package:todo/util/tools.dart';
 import 'package:todo/widget/task_widget.dart';
 
+import 'category_page.dart';
+
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key, required this.store}) : super(key: key);
+
+  final HomeStore store;
 
   @override
   State<StatefulWidget> createState() => _HomePageState();
@@ -18,7 +20,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   ScrollController? controller;
-  final HomeStore store = HomeStore(TaskRepository(TaskDao()));
+
+  HomeStore get store => widget.store;
 
   @override
   void initState() {
@@ -33,9 +36,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _handleCreate(BuildContext context) {
-    showEditDialog(context).then((value) {
-      if (value?.isNotEmpty == true) {
-        store.addTask(value!);
+    showEditDialog(context, S.of(context).inputTip).then((value) {
+      final content = value?.trim();
+      if (content?.isNotEmpty == true) {
+        store.addTask(content!);
       }
     });
   }
@@ -49,14 +53,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _handleDelete(Task task) {
-    store.delete(task);
+    store.deleteTask(task);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).title),
+        title: Observer(
+          builder: (_) {
+            return Text(store.currentCategory.name);
+          },
+        ),
         centerTitle: true,
       ),
       body: Observer(
@@ -75,6 +83,7 @@ class _HomePageState extends State<HomePage> {
           );
         },
       ),
+      drawer: CategoryPage(store: store),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _handleCreate(context),
         child: Icon(Icons.add),
