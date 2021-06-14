@@ -25,6 +25,17 @@ class Category {
   Map<String, dynamic> toJson() => _$CategoryToJson(this);
 
   @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Category &&
+          runtimeType == other.runtimeType &&
+          name == other.name &&
+          type == other.type;
+
+  @override
+  int get hashCode => name.hashCode ^ type.hashCode;
+
+  @override
   String toString() {
     return 'Category{name: $name, type: $type}';
   }
