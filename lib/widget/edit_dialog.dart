@@ -5,7 +5,9 @@
 import 'package:todo/base/gui.dart';
 
 class EditDialog extends StatefulWidget {
-  EditDialog({Key? key}) : super(key: key);
+  EditDialog({Key? key, this.hint = ""}) : super(key: key);
+
+  final String hint;
 
   @override
   State<EditDialog> createState() => _EditDialogState();
@@ -49,11 +51,12 @@ class _EditDialogState extends State<EditDialog> {
     ];
     return AlertDialog(
       content: TextField(
+        autofocus: true,
         textInputAction: TextInputAction.done,
         maxLines: null,
         controller: controller,
         decoration: InputDecoration(
-          hintText: local.inputTip,
+          hintText: widget.hint,
         ),
       ),
       actions: actions,
