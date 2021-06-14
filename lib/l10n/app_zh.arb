@@ -1,3 +1,5 @@
 {
-  "title": "Todo"
+  "title": "Todo",
+  "complete": "完成",
+  "delete": "删除"
 }

@@ -1,5 +1,7 @@
 {
   "title": "Todo",
+  "complete": "complete",
+  "delete": "delete",
   "@title": {
     "description": "home page title"
   }
