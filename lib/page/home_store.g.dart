@@ -17,18 +17,33 @@ mixin _$HomeStore on _HomeStore, Store {
               name: '_HomeStore.currentCategory'))
       .value;
 
-  final _$_categoryAtom = Atom(name: '_HomeStore._category');
+  final _$_selectedCategoryAtom = Atom(name: '_HomeStore._selectedCategory');
 
   @override
-  Category get _category {
-    _$_categoryAtom.reportRead();
-    return super._category;
+  Category? get _selectedCategory {
+    _$_selectedCategoryAtom.reportRead();
+    return super._selectedCategory;
   }
 
   @override
-  set _category(Category value) {
-    _$_categoryAtom.reportWrite(value, super._category, () {
-      super._category = value;
+  set _selectedCategory(Category? value) {
+    _$_selectedCategoryAtom.reportWrite(value, super._selectedCategory, () {
+      super._selectedCategory = value;
+    });
+  }
+
+  final _$categoriesAtom = Atom(name: '_HomeStore.categories');
+
+  @override
+  ObservableList<Category> get categories {
+    _$categoriesAtom.reportRead();
+    return super.categories;
+  }
+
+  @override
+  set categories(ObservableList<Category> value) {
+    _$categoriesAtom.reportWrite(value, super.categories, () {
+      super.categories = value;
     });
   }
 
@@ -83,11 +98,44 @@ mixin _$HomeStore on _HomeStore, Store {
   }
 
   @override
-  void delete(Task task) {
+  void deleteTask(Task task) {
     final _$actionInfo =
-        _$_HomeStoreActionController.startAction(name: '_HomeStore.delete');
+        _$_HomeStoreActionController.startAction(name: '_HomeStore.deleteTask');
     try {
-      return super.delete(task);
+      return super.deleteTask(task);
+    } finally {
+      _$_HomeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void addCategory(String name) {
+    final _$actionInfo = _$_HomeStoreActionController.startAction(
+        name: '_HomeStore.addCategory');
+    try {
+      return super.addCategory(name);
+    } finally {
+      _$_HomeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void deleteCategory(Category category) {
+    final _$actionInfo = _$_HomeStoreActionController.startAction(
+        name: '_HomeStore.deleteCategory');
+    try {
+      return super.deleteCategory(category);
+    } finally {
+      _$_HomeStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void selectCategory(Category category) {
+    final _$actionInfo = _$_HomeStoreActionController.startAction(
+        name: '_HomeStore.selectCategory');
+    try {
+      return super.selectCategory(category);
     } finally {
       _$_HomeStoreActionController.endAction(_$actionInfo);
     }
@@ -96,6 +144,7 @@ mixin _$HomeStore on _HomeStore, Store {
   @override
   String toString() {
     return '''
+categories: ${categories},
 tasks: ${tasks},
 currentCategory: ${currentCategory}
     ''';
