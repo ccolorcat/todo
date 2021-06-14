@@ -14,6 +14,8 @@ class Task {
   int? id;
   @JsonKey(name: 'category')
   String category;
+
+  /// fromMillisecondsSinceEpoch
   @JsonKey(name: 'create_time')
   int createTime;
   @JsonKey(name: 'content')
