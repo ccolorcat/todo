@@ -38,6 +38,10 @@ class Task {
     );
   }
 
+  factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TaskToJson(this);
+
   void completed() {
     state = Task.stateCompleted;
   }
@@ -45,10 +49,6 @@ class Task {
   void uncompleted() {
     state = Task.stateNormal;
   }
-
-  factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
-
-  Map<String, dynamic> toJson() => _$TaskToJson(this);
 
   @override
   String toString() {
