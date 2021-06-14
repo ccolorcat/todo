@@ -21,12 +21,14 @@ class Task {
   @JsonKey(name: 'state')
   int state;
 
+  bool get isCompleted => state == Task.stateCompleted;
+
   Task({
     this.id,
     required this.category,
     required this.createTime,
     required this.content,
-    this.state = 0,
+    this.state = Task.stateNormal,
   });
 
   factory Task.create(String category, String content) {
