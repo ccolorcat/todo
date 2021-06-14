@@ -6,6 +6,9 @@
   "cancel": "cancel",
   "confirm": "confirm",
   "inputTip": "input your task",
+  "type": "type",
+  "categoryDefault": "default",
+  "inputCategory": "input category",
   "@title": {
     "description": "home page title"
   }

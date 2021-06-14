@@ -5,5 +5,8 @@
   "delete": "删除",
   "cancel": "取消",
   "confirm": "确定",
-  "inputTip": "输入你的任务"
+  "inputTip": "输入你的任务",
+  "type": "类别",
+  "categoryDefault": "默认",
+  "inputCategory": "输入类别"
 }
