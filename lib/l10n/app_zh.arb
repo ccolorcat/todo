@@ -1,5 +1,9 @@
 {
   "title": "Todo",
   "complete": "完成",
-  "delete": "删除"
+  "incomplete": "未完成",
+  "delete": "删除",
+  "cancel": "取消",
+  "confirm": "确定",
+  "inputTip": "输入你的任务"
 }

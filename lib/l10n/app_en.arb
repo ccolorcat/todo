@@ -1,7 +1,11 @@
 {
   "title": "Todo",
   "complete": "complete",
+  "incomplete": "incomplete",
   "delete": "delete",
+  "cancel": "cancel",
+  "confirm": "confirm",
+  "inputTip": "input your task",
   "@title": {
     "description": "home page title"
   }
