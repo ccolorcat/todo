@@ -46,11 +46,11 @@ class Task {
 
   Map<String, dynamic> toJson() => _$TaskToJson(this);
 
-  void completed() {
+  void complete() {
     state = Task.stateCompleted;
   }
 
-  void uncompleted() {
+  void incomplete() {
     state = Task.stateNormal;
   }
 
